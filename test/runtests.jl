@@ -78,6 +78,17 @@ function test_length()
     @test p_incremental.current_ticks == p_incremental.maximum_length - 2
 end
 
+function test_clear_progress()
+    pb = PSRProgressBar.ProgressBar(maximum_steps = 10, clear_progress_when_completed = true)
+    for _ in 1:10
+        PSRProgressBar.next!(pb)
+        sleep(0.5)
+    end
+    PSRProgressBar.done!(pb)
+    @test pb._cleared == true
+    return nothing
+end
+
 function test_convert_time()
     @test PSRProgressBar._convert_time_unit(0.1) == "100ms"
     @test PSRProgressBar._convert_time_unit(7200.0) == "2h"
@@ -89,3 +100,4 @@ test_aqua()
 test_progressbar()
 test_length()
 test_convert_time()
+test_clear_progress()

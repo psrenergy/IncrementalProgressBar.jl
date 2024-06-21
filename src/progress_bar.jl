@@ -30,6 +30,9 @@ Base.@kwdef mutable struct ProgressBar <: AbstractProgressBar
     has_elapsed_time::Bool = true
     has_finished::Bool = false
 
+    clear_progress_when_completed::Bool = false
+    _cleared::Bool = false
+
     display::Display = ITERATIVE
 end
 
@@ -144,8 +147,30 @@ function next!(p::AbstractProgressBar, steps::Integer = 1)
     return nothing
 end
 
+erase_to_end_of_line(output_stream::IO) = print(output_stream, "\033[K")
+move_up_1_line(output_stream::IO) = print(output_stream, "\033[1A")
+move_down_1_line(output_stream::IO) = print(output_stream, "\033[1B")
+go_to_start_of_line(output_stream::IO) = print(output_stream, "\r")
+erase_line(output_stream::IO) = begin
+  go_to_start_of_line(output_stream)
+  erase_to_end_of_line(output_stream)
+end
+
+function clear_progress(p::AbstractProgressBar)
+    # Reset cursor, fill width with empty spaces, and then reset again
+    if p._cleared
+        # Only clear once
+        return
+    end
+    erase_line(stderr)
+    p._cleared = true
+    return nothing
+  end
+
 function done!(p::AbstractProgressBar)
     next!(p, p.maximum_steps - p.current_steps)
-    println("")
+    if p.clear_progress_when_completed
+        clear_progress(p)
+    end
     return nothing
 end
