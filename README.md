@@ -1,12 +1,12 @@
-# PSRProgressBar.jl
+# IncrementalProgressBar.jl
 
 <div align="center">
     <a href="/assets/">
-        <img src="/assets/logo.svg" width=400px alt="PSRProgressBar.jl" />
+        <img src="/assets/logo.svg" width=400px alt="IncrementalProgressBar.jl" />
     </a>
     <br>
-    <a href="https://github.com/psrenergy/PSRProgressBar.jl/actions/workflows/CI.yml">
-        <img src="https://github.com/psrenergy/PSRProgressBar.jl/actions/workflows/CI.yml/badge.svg?branch=master" alt="CI" />
+    <a href="https://github.com/psrenergy/IncrementalProgressBar.jl/actions/workflows/CI.yml">
+        <img src="https://github.com/psrenergy/IncrementalProgressBar.jl/actions/workflows/CI.yml/badge.svg?branch=master" alt="CI" />
     </a>
 </div>
 
@@ -14,7 +14,7 @@
 
 ### Installation
 ```julia
-julia> ]add https://github.com/psrenergy/PSRProgressBar.jl
+julia> ]add https://github.com/psrenergy/IncrementalProgressBar.jl
 ```
 
 ### Ways of displaying a progress bar
@@ -35,7 +35,7 @@ The incremental progress bar does not overwrite the whole terminal line. It adds
 
 The progress bar can be costumized by passing the following arguments to the `ProgressBar` constructor:
 
-- `display`: The type of progress bar to be displayed (`PSRProgressBar.Iterative` or `PSRProgressBar.Incremental`).
+- `display`: The type of progress bar to be displayed (`IncrementalProgressBar.Incremental` or `IncrementalProgressBar.Iterative`).
 
 - `maximum_steps`(Int): The maximum number of steps the progress bar will take.
 
@@ -62,15 +62,15 @@ The progress bar can be costumized by passing the following arguments to the `Pr
 ## Examples
 
 ```julia
-using PSRProgressBar
+using IncrementalProgressBar
 
-p = PSRProgressBar.ProgressBar(maximum_steps = 100, tick = "+", left_bar = "|", right_bar="|")
+p = IncrementalProgressBar.ProgressBar(maximum_steps = 100, tick = "+", left_bar = "|", right_bar="|")
 
 for i in 1:100
-    PSRProgressBar.next!(p)
+    IncrementalProgressBar.next!(p)
     sleep(0.1)
 end
-PSRProgressBar.done!(p)
+IncrementalProgressBar.done!(p)
 ```
 
 
