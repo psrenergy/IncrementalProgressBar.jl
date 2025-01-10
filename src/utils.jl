@@ -33,7 +33,7 @@ end
 
 function _elapsed_text(p::AbstractProgressBar)
     if !p.has_elapsed_time
-        return p.right_bar
+        return ""
     end
     elapsed = time() - p.start_time
 
@@ -41,6 +41,9 @@ function _elapsed_text(p::AbstractProgressBar)
 end
 
 function _percentage_text(p::AbstractProgressBar, frac::Real)
+    if !p.has_percentage
+        return ""
+    end
     percentage = floor(Int, frac * 100)
     percentage_text = (" "^(4 - length("$percentage"))) * "$percentage" # percentage text should always have length 5 ( 1 for spacing + xxx%)
     if p.has_percentage && p.display == ITERATIVE

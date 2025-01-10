@@ -60,10 +60,6 @@ function _show_progress_bar(
     l_text::AbstractString = "",
     r_text::AbstractString = "",
 )
-    if isempty(l_text)
-        l_text = p.left_bar
-    end
-
     length_ticks = floor(Int, (p.maximum_length - 2) * (p.current_steps / p.maximum_steps))
     blank_space = (p.maximum_length - 2) - length_ticks
 
@@ -80,30 +76,31 @@ function _show_progress_bar(
             printstyled(p.tick^(length_ticks - p.current_ticks); color = p.color)
             if p.has_finished
                 printstyled(p.right_bar * r_text; color = p.color)
-                println("")
             end
         end
         p.current_ticks = length_ticks
         return nothing
-    end
-
-    print("\e[1G")
-    print("\e[2K")
-    if !isempty(p.first_tick) && length_ticks > 0
-        if p.has_finished
-            p.first_tick = ""
-        else
-            length_ticks -= 1
+    elseif p.display == ITERATIVE
+        print("\e[1G")
+        print("\e[2K")
+        if !isempty(p.first_tick) && length_ticks > 0
+            if p.has_finished
+                p.first_tick = ""
+            else
+                length_ticks -= 1
+            end
         end
+        printstyled(
+            l_text * p.left_bar * p.tick^length_ticks * p.first_tick * " "^blank_space * p.right_bar * r_text;
+            color = p.color,
+        )
+    
+        p.current_ticks = length_ticks
+    
+        return nothing
+    else 
+        error("Invalid display type, $(p.display)")
     end
-    printstyled(
-        l_text * p.left_bar * p.tick^length_ticks * p.first_tick * " "^blank_space * p.right_bar * r_text;
-        color = p.color,
-    )
-
-    p.current_ticks = length_ticks
-
-    return nothing
 end
 
 function next!(p::AbstractProgressBar, steps::Integer = 1)
@@ -145,7 +142,9 @@ function next!(p::AbstractProgressBar, steps::Integer = 1)
 end
 
 function done!(p::AbstractProgressBar)
-    next!(p, p.maximum_steps - p.current_steps)
+    if !p.has_finished
+        next!(p, p.maximum_steps - p.current_steps)
+    end
     println("")
     return nothing
 end
