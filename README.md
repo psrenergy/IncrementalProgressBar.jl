@@ -14,7 +14,7 @@
 
 ### Installation
 ```julia
-julia> ]add https://github.com/psrenergy/IncrementalProgressBar.jl
+julia> ] IncrementalProgressBar
 ```
 
 ### Ways of displaying a progress bar
