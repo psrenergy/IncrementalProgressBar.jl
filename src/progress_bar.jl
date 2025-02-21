@@ -74,9 +74,9 @@ function _show_progress_bar(
             )
         else
             printstyled(p.tick^(length_ticks - p.current_ticks); color = p.color)
-            if p.has_finished
-                printstyled(p.right_bar * r_text; color = p.color)
-            end
+        end
+        if p.has_finished
+            printstyled(p.right_bar * r_text; color = p.color)
         end
         p.current_ticks = length_ticks
         return nothing
