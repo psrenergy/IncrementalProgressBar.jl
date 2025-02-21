@@ -17,7 +17,10 @@ function test_progressbar()
         @test pb.current_steps == i
     end
 
-    pb = IncrementalProgressBar.ProgressBar(maximum_steps = 10, display = IncrementalProgressBar.INCREMENTAL)
+    pb = IncrementalProgressBar.ProgressBar(
+        maximum_steps = 10,
+        display = IncrementalProgressBar.INCREMENTAL,
+    )
     for i = 1:10
         redirect_stdout(devnull) do
             IncrementalProgressBar.next!(pb, 1)
@@ -25,7 +28,12 @@ function test_progressbar()
         @test pb.current_steps == i
     end
 
-    pb = IncrementalProgressBar.ProgressBar(maximum_steps = 1, maximum_length = 50, display = IncrementalProgressBar.INCREMENTAL, has_elapsed_time = false)
+    pb = IncrementalProgressBar.ProgressBar(
+        maximum_steps = 1,
+        maximum_length = 50,
+        display = IncrementalProgressBar.INCREMENTAL,
+        has_elapsed_time = false,
+    )
     open("stodout.txt", "w+") do io
         redirect_stdout(io) do
             IncrementalProgressBar.next!(pb, 1)
