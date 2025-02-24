@@ -74,9 +74,9 @@ function _show_progress_bar(
             )
         else
             printstyled(p.tick^(length_ticks - p.current_ticks); color = p.color)
-            if p.has_finished
-                printstyled(p.right_bar * r_text; color = p.color)
-            end
+        end
+        if p.has_finished
+            printstyled(p.right_bar * r_text; color = p.color)
         end
         p.current_ticks = length_ticks
         return nothing
@@ -91,14 +91,20 @@ function _show_progress_bar(
             end
         end
         printstyled(
-            l_text * p.left_bar * p.tick^length_ticks * p.first_tick * " "^blank_space * p.right_bar * r_text;
+            l_text *
+            p.left_bar *
+            p.tick^length_ticks *
+            p.first_tick *
+            " "^blank_space *
+            p.right_bar *
+            r_text;
             color = p.color,
         )
-    
+
         p.current_ticks = length_ticks
-    
+
         return nothing
-    else 
+    else
         error("Invalid display type, $(p.display)")
     end
 end
